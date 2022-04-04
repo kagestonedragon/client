@@ -6,4 +6,4 @@ clean:
 
 build: clean
 	cd ./cmd/app && \
-	CGO_ENABLED=0 go build -o ../../${BINARY} .
+	go build -o ../../${BINARY} .
