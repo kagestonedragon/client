@@ -34,8 +34,10 @@ func main() {
 	switch cfg.Type {
 	case "file":
 		observer = createFileObserver(cfg, s, l)
+		break
 	case "nats":
 		observer = createNatsObserver(cfg, s, l)
+		break
 	default:
 		l.Fatalf("Type %s not supported", cfg.Type)
 	}
