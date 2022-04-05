@@ -13,5 +13,3 @@ services:
       - 8222:8222
     networks:
       - app-tier
-    volumes:
-      - ./:/go
