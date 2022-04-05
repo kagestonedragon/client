@@ -11,16 +11,26 @@ const ServiceName = "client"
 
 var options = []option{
 	{"config", "string", "", "config file"},
+	{"type", "string", "nats", "file"},
 
-	{"observer.file", "string", "./resources/users.csv", "external users file"},
+	{"observer.file.path", "string", "./resources/users.csv", "external users file"},
+	{"observer.nats.target", "string", "nats://127.0.0.1:4222", "nats target"},
+	{"observer.nats.subject", "string", "users", "external users file"},
 	{"observer.pause", "int", 5, "observer pause when file doesn't exists (seconds)"},
 	{"observer.chunk", "int", 5, "number of parallel requests to service"},
 	{"service.target", "string", ":9091", "service target"},
 }
 
 type Config struct {
+	Type     string
 	Observer struct {
-		File  string
+		Nats struct {
+			Target  string
+			Subject string
+		}
+		File struct {
+			Path string
+		}
 		Pause int
 		Chunk int
 	}
