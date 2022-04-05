@@ -15,7 +15,7 @@ var options = []option{
 
 	{"observer.file.path", "string", "./resources/users.csv", "external users file"},
 	{"observer.nats.target", "string", "nats://127.0.0.1:4222", "nats target"},
-	{"observer.nats.subject", "string", "users", "external users file"},
+	{"observer.nats.subject", "string", "users", "nats subject"},
 	{"observer.pause", "int", 5, "observer pause when file doesn't exists (seconds)"},
 	{"observer.chunk", "int", 5, "number of parallel requests to service"},
 	{"service.target", "string", ":9091", "service target"},

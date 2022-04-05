@@ -54,6 +54,7 @@ func createNatsObserver(cfg *configs.Config, service u.Service, logger *log.Logg
 	return user.NewNatsObserver(
 		nc,
 		cfg.Observer.Chunk,
+		cfg.Observer.Nats.Subject,
 		time.Duration(cfg.Observer.Pause)*time.Second,
 		service,
 		logger,

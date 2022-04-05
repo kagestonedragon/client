@@ -13,15 +13,17 @@ import (
 type natsObserver struct {
 	nc      *nats.Conn
 	chunk   int
+	subject string
 	pause   time.Duration
 	service user.Service
 	logger  *log.Logger
 }
 
-func NewNatsObserver(nc *nats.Conn, c int, p time.Duration, s user.Service, l *log.Logger) Observer {
+func NewNatsObserver(nc *nats.Conn, c int, subj string, p time.Duration, s user.Service, l *log.Logger) Observer {
 	return &natsObserver{
 		nc:      nc,
 		chunk:   c,
+		subject: subj,
 		pause:   p,
 		service: s,
 		logger:  l,
@@ -31,7 +33,7 @@ func NewNatsObserver(nc *nats.Conn, c int, p time.Duration, s user.Service, l *l
 func (o *natsObserver) Observe(ctx context.Context) error {
 	var wg sync.WaitGroup
 
-	sub, err := o.nc.SubscribeSync("users")
+	sub, err := o.nc.SubscribeSync(o.subject)
 	if err != nil {
 		o.logger.Fatal(err)
 	}

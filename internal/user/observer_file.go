@@ -34,25 +34,31 @@ func (o *fileObserver) Observe(ctx context.Context) error {
 	t := time.Time{}
 
 	for {
-		f, err := os.Open(o.file)
-		if err != nil {
+		s, err := os.Stat(o.file)
+		if errors.Is(err, os.ErrNotExist) {
 			time.Sleep(o.pause)
 			continue
-		}
-
-		s, err := os.Stat(o.file)
-		if err != nil {
+		} else if err != nil {
 			return errors.Wrap(err, "read file stats")
 		}
 
 		if m := s.ModTime(); m.After(t) {
 			t = m
-			o.process(ctx, csv.NewReader(f))
 		} else {
 			time.Sleep(o.pause)
+			continue
 		}
 
-		f.Close()
+		f, err := os.Open(o.file)
+		if err != nil {
+			return errors.Wrap(err, "open file")
+		}
+
+		o.process(ctx, csv.NewReader(f))
+
+		if err := f.Close(); err != nil {
+			return errors.Wrap(err, "close file")
+		}
 	}
 }
 
@@ -69,6 +75,7 @@ func (o *fileObserver) process(ctx context.Context, r *csv.Reader) {
 			}
 			if err != nil {
 				o.logger.Printf("Read error: %s\n", err)
+				continue
 			}
 
 			wg.Add(1)
