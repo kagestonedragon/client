@@ -11,7 +11,6 @@ services:
       - 4222:4222
       - 6222:6222
       - 8222:8222
-      - 9091:9091
     networks:
       - app-tier
     volumes:
